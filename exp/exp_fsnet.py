@@ -138,7 +138,6 @@ class Exp_TS2VecSupervised(Exp_Basic):
             shuffle=shuffle_flag,
             num_workers=args.num_workers,
             drop_last=drop_last)
-
         return data_set, data_loader
 
     def _select_optimizer(self):
@@ -288,7 +287,7 @@ class Exp_TS2VecSupervised(Exp_Basic):
         return outputs, rearrange(batch_y, 'b t d -> b (t d)')
     
     def _ol_one_batch(self,dataset_object, batch_x, batch_y, batch_x_mark, batch_y_mark):
-        true = rearrange(batch_y, 'b t d -> b (t d)').float().to(self.device)
+        true = rearrange(batch_y[:, -self.args.pred_len:, :], 'b t d -> b (t d)').float().to(self.device)
         criterion = self._select_criterion()
         
         x = torch.cat([batch_x.float(), batch_x_mark.float()], dim=-1).to(self.device)
@@ -299,7 +298,6 @@ class Exp_TS2VecSupervised(Exp_Basic):
                     outputs = self.model(x)
             else:
                 outputs = self.model(x)
-
             loss = criterion(outputs, true)
             loss.backward()
             self.opt.step()       

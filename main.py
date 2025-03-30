@@ -108,7 +108,7 @@ parser.add_argument('--loss', type=str, default='mse',help='loss function')
 parser.add_argument('--lradj', type=str, default='type1',help='adjust learning rate')
 parser.add_argument('--use_amp', action='store_true', help='use automatic mixed precision training', default=False)
 parser.add_argument('--inverse', action='store_true', help='inverse output data', default=False)
-parser.add_argument('--method', type=str, default='online')
+parser.add_argument('--method', type=str, default='fsnet')
 
 parser.add_argument('--teacher_forcing', action='store_true', help='use teacher forcing during forecasting', default=False)
 parser.add_argument('--online_learning', type=str, default='full')

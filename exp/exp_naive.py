@@ -289,12 +289,13 @@ class Exp_TS2VecSupervised(Exp_Basic):
         x = torch.cat([batch_x.float(), batch_x_mark.float()], dim=-1).to(self.device)
         batch_y = batch_y.float()
         for _ in range(self.n_inner):
+            print(batch_y.shape)
             if self.args.use_amp:
                 with torch.cuda.amp.autocast():
                     outputs = self.model(x)
             else:
                 outputs = self.model(x)
-
+            print(outputs.shape)
             loss = criterion(outputs, true)
             loss.backward()
             self.opt.step()       
